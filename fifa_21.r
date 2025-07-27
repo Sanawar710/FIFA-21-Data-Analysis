@@ -50,14 +50,41 @@ cor.matrix = cor(na.omit(fifa21df[, -c(1, 2)]))
 corrplot(cor.matrix, type = )
 
 # Box-plot of variables
-ggplot(data  = melt(fifa21df), mapping = aes(x = variable, y = value)) +
-     geom_boxplot()
+ggplot(data = melt(fifa21df), mapping = aes(x = variable, y = value)) +
+    geom_boxplot()
 
 # Outlier Detection
 out <- boxplot.stats(fifa21df$age)$out
-out_ind <- which(fifa21df$age%in% c(out))
+out_ind <- which(fifa21df$age %in% c(out))
 out_ind
-fifa21df$weight_kg[c(13,103)]
-fifa21df$short_name[c(13,103)]
+fifa21df$weight_kg[c(13, 103)]
+fifa21df$short_name[c(13, 103)]
 
+# Scatter-plot between variables
+pairs(fifa21df[, -c(1, 2)])
+tiff("ggpairs.tif", height = 10, width = 10, units = 'in', res = 300)
+ggpairs(fifa21df[, -c(1, 2)])
+dev.off()
 
+ggplot(fifa21df, mapping = aes(x = age, y = overall)) +
+    geom_point(alpha = .1) +
+    geom_smooth()
+
+ggplot(fifa21df, mapping = aes(x = weight_kg, y = pace))
+    geom_point(alpha = .1) +
+    geom_smooth()
+
+# QQ Plot
+qqnorm(fifa21df$age, pch = 1, frame = TRUE)
+qqline(fifa21df$age, col = "steelblue", lwd = 2)
+
+qqnorm(fifa21df$pace, pch = 1, frame = TRUE)
+qqline(fifa21df$pace, col = "steelblue", lwd = 2)
+
+qqnorm(fifa21df$height_cm, pch = 1, frame = TRUE)
+qqline(fifa21df$height_cm, col = "steelblue", lwd = 2)
+
+# Summary Statistics
+summary(fifa21df$age)
+summary(fifa21df$height_cm)
+summary(fifa21df$weight_kg)
